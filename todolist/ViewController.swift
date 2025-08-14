@@ -2,7 +2,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-
+    
     private lazy var textField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Add task"
@@ -51,10 +51,22 @@ class ViewController: UIViewController {
     }
     
     
-    
     @objc private func buttonTapped() {
         if let task = textField.text, !task.isEmpty {
-            print("input is \(task)")
+            let Hstack = UIStackView()
+            Hstack.axis = .horizontal
+            let label = UILabel()
+            let cancelButton = UIButton(type: .system)
+            cancelButton.setTitle("cancel", for: .normal)
+            label.text = task
+            label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+            label.textColor = .black
+            label.textAlignment = .center
+            Hstack.addArrangedSubview(label)
+            Hstack.addArrangedSubview(cancelButton)
+            VerticalstackView.addArrangedSubview(Hstack)
+            textField.text = ""
+            
         }
         
     }
