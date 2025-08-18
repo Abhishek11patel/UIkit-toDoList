@@ -2,7 +2,6 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    
     private lazy var textField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Add task"
@@ -34,41 +33,46 @@ class ViewController: UIViewController {
         stackView.spacing = 10
         return stackView
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        
         view.addSubview(VerticalstackView)
-
         
         NSLayoutConstraint.activate([
             VerticalstackView.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor, constant: 40),
             VerticalstackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             textField.widthAnchor.constraint(equalToConstant: 200)
         ])
-        
     }
-    
     
     @objc private func buttonTapped() {
         if let task = textField.text, !task.isEmpty {
             let Hstack = UIStackView()
             Hstack.axis = .horizontal
+            Hstack.spacing = 10
+            
             let label = UILabel()
-            let cancelButton = UIButton(type: .system)
-            cancelButton.setTitle("cancel", for: .normal)
             label.text = task
             label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
             label.textColor = .black
             label.textAlignment = .center
+            
+            let cancelButton = UIButton(type: .system)
+            cancelButton.setTitle("Cancel", for: .normal)
+            
+            cancelButton.addAction(UIAction(handler: { [weak self, weak Hstack] _ in
+                guard let stack = Hstack else { return }
+                self?.VerticalstackView.removeArrangedSubview(stack)
+                stack.removeFromSuperview()
+            }), for: .touchUpInside)
+            
             Hstack.addArrangedSubview(label)
             Hstack.addArrangedSubview(cancelButton)
+            
             VerticalstackView.addArrangedSubview(Hstack)
             textField.text = ""
-            
         }
-        
     }
 }
 
